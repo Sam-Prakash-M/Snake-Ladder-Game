@@ -15,24 +15,24 @@ import com.prakash.repository.SnakeGameRepository;
 
 public class BaseViewModel {
 
-	private BaseView baseview;
+	private BaseView baseView;
 
 	public BaseViewModel(BaseView baseView) {
 
-		this.baseview = baseView;
+		this.baseView = baseView;
 	}
 
-	public void setSnakePlaces(int[] head, int[] tail, int headPos, int tailPos) {
+	public void setSnakePlaces(int headPos, int tailPos) {
 
-		Snakes snake = new Snakes(head, tail, headPos, tailPos);
+		Snakes snake = new Snakes(headPos, tailPos);
 
 		SnakeGameRepository.SnakeList.add(snake);
 
 	}
 
-	public void setLadderPlaces(int[] top, int[] bottom, int topPos, int bottomPos) {
+	public void setLadderPlaces( int topPos, int bottomPos) {
 
-		Ladders ladder = new Ladders(top, bottom, topPos, bottomPos);
+		Ladders ladder = new Ladders(topPos, bottomPos);
 		SnakeGameRepository.laddersList.add(ladder);
 
 	}
@@ -50,21 +50,20 @@ public class BaseViewModel {
 
 		int number = randomNumber.nextInt(1, 7);
 		System.out.println("Random  Number is : " + number);
-		if (isPossibleToMove(number, player)) {
+		if (isPossibleToMove(number, player,size*size)) {
 
-			int[] playerPlace = player.getPlayerPlace();
 			int newPlace = player.getCurrPlace() + number;
-			System.out.println(player.getName() + " Rolled a " + number + " and" + " moved from "
+			
+			baseView.showStatus(player.getName() + " Rolled a " + number + " and" + " moved from "
 					+ player.getCurrPlace() + " to " + newPlace);
+			
 			player.setCurrPlace(newPlace);
-
-			setCorrectPlaceInBoard(playerPlace, size, newPlace);
 
 			LadderUps(player);
 
 			snakesDown(player);
 
-			if (playerPlace[0] == 0 && playerPlace[1] == 0) {
+			if (player.getCurrPlace() == size*size) {
 				return true;
 			}
 
@@ -81,9 +80,9 @@ public class BaseViewModel {
 		for (int i = 0; i < list.size(); i++) {
 
 			if (list.get(i).getHeadPos() == player.getCurrPlace()) {
-
-				System.out.println(player.getName() + " Attacked by Snake and getting fallen from"
+				baseView.showStatus(player.getName() + " Attacked by Snake and getting fallen from"
 						+ player.getCurrPlace() + " to " + list.get(i).getTailPos());
+				
 				player.setCurrPlace(list.get(i).getTailPos());
 				break;
 			}
@@ -99,9 +98,9 @@ public class BaseViewModel {
 		for (int i = 0; i < list.size(); i++) {
 
 			if (list.get(i).getBottomPos() == player.getCurrPlace()) {
-
-				System.out.println(player.getName() + " Moves up through the ladder from" + player.getCurrPlace()
-						+ " to " + list.get(i).getTopPos());
+				 baseView.showStatus(player.getName() + " Moves up through the ladder from" + player.getCurrPlace()
+					+ " to " + list.get(i).getTopPos());
+				
 				player.setCurrPlace(list.get(i).getTopPos());
 				break;
 			}
@@ -110,19 +109,9 @@ public class BaseViewModel {
 
 	}
 
-	private boolean isPossibleToMove(int number, Players player) {
+	private boolean isPossibleToMove(int number, Players player,int destination) {
 
-		int[] playerPlace = player.getPlayerPlace();
-		int currPlace = playerPlace[0];
-		if (currPlace == 0) {
-
-			if (playerPlace[1] - number >= 0) {
-				return true;
-			}
-			return false;
-		}
-
-		return true;
+		return player.getCurrPlace() + number <= destination;
 	}
 
 	public void setBoardSize(int size) {
@@ -130,23 +119,22 @@ public class BaseViewModel {
 
 	}
 
-	public void setCorrectPlaceInBoard(int[] array, int size, int pos) {
-
-		int quotient = pos / size, rem = pos % size, row, col;
-
-		row = (size - 1) - (rem % size == 0 ? (quotient - 1) : quotient);
-
-		if (row % 2 == 0) {
-
-			col = pos % size == 0 ? 0 : size - (pos % size);
-		} else {
-			col = pos % size == 0 ? (size - 1) : (pos % size - 1);
-		}
-
-		array[0] = row;
-		array[1] = col;
-
-	}
+	/*
+	 * public void setCorrectPlaceInBoard(int[] array, int size, int pos) {
+	 * 
+	 * int quotient = pos / size, rem = pos % size, row, col;
+	 * 
+	 * row = (size - 1) - (rem % size == 0 ? (quotient - 1) : quotient);
+	 * 
+	 * if (row % 2 == 0) {
+	 * 
+	 * col = pos % size == 0 ? 0 : size - (pos % size); } else { col = pos % size ==
+	 * 0 ? (size - 1) : (pos % size - 1); }
+	 * 
+	 * array[0] = row; array[1] = col;
+	 * 
+	 * }
+	 */
 
 	public void findMinimumWayToAcheiveDestination(int destination) {
 
@@ -198,8 +186,8 @@ public class BaseViewModel {
                 }
             }
         }
-
-        System.out.println("Minimum Path: " + minimumPath);
+        baseView.showStatus("Minimum Path: " + minimumPath);
+       
     }
 
 
@@ -233,10 +221,13 @@ public class BaseViewModel {
 		
 		int difference = destination - position;
 		if( difference > 6) {
-			System.out.println("There is no probability to win the Game : ");
+			
+			baseView.showStatus("There is no probability to win the Game : ");
+			
 		}
 		else {
-			System.out.println("Probability to win is : "+difference);
+			baseView.showStatus("Probability to win is : "+difference);
+			
 		}
 	}
 

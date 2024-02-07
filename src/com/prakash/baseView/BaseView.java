@@ -1,6 +1,5 @@
 package com.prakash.baseView;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -34,16 +33,16 @@ public class BaseView {
 			System.out.println("Enter a head Position of Snake  "+(i+1));
 			
 			int headPos = scanner.nextInt();
-			int[] head = new int[2];
-			baseViewModel.setCorrectPlaceInBoard(head,size,headPos);
+			
+			
 			
 			System.out.println("Enter a tail Position of Snake : "+(i+1));
 			
 			int tailPos = scanner.nextInt();
-			int[] tail = new int[2];
-			baseViewModel.setCorrectPlaceInBoard(tail,size,tailPos);
 			
-			baseViewModel.setSnakePlaces(head,tail,headPos,tailPos);
+			
+			
+			baseViewModel.setSnakePlaces(headPos,tailPos);
 
 		}
 		System.out.println("Enter a Number of Ladders : ");
@@ -54,14 +53,14 @@ public class BaseView {
 			System.out.println("Enter a top Position of Ladder  : "+(i+1));
 			
 			int topPos = scanner.nextInt();
-			int[] top = new int[2];
-			baseViewModel.setCorrectPlaceInBoard(top,size,topPos);
+			
+			
 			System.out.println("Enter a Bottom Position of Ladder  : "+(i+1));
 			int bottomPos = scanner.nextInt();
-			int[] bottom = new int[2];
-			baseViewModel.setCorrectPlaceInBoard(bottom,size,bottomPos);
 			
-			baseViewModel.setLadderPlaces(top,bottom,topPos,bottomPos);
+			
+			
+			baseViewModel.setLadderPlaces(topPos,bottomPos);
 
 		}
 		
@@ -112,5 +111,10 @@ public class BaseView {
 		}
 		
 		
+	}
+
+	public void showStatus(String status) {
+		
+		System.out.println(status);
 	}
 }
