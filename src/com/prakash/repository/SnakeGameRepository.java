@@ -22,6 +22,9 @@ public class SnakeGameRepository {
 	public static List<Players> playersList = new ArrayList<>(); 
 	
 	
+	private SnakeGameRepository() {
+		
+	}
 	
 	public static SnakeGameRepository getInstance() {
 		
