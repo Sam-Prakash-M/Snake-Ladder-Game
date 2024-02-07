@@ -1,8 +1,11 @@
 package com.prakash.baseView;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.prakash.dto.Ladders;
@@ -147,86 +150,58 @@ public class BaseViewModel {
 
 	public void findMinimumWayToAcheiveDestination(int destination) {
 
-		Queue<List<Integer>> path = new LinkedList<>();
-		
-		int minPathCount = Integer.MAX_VALUE;
+        Queue<List<Integer>> path = new LinkedList<>();
+        Set<Integer> visited = new HashSet<>(); // Track visited positions
 
-		List<Integer> minimumPath = SnakeGameRepository.minimumPath;
+        int minPathCount = Integer.MAX_VALUE;
+        List<Integer> minimumPath = new ArrayList<>();
 
-		for (int i = 1; i <= 6; i++) {
+        path.add(new ArrayList<>());
+        while (!path.isEmpty()) {
+            List<Integer> currentPath = path.poll();
+            int currPlace = currentPath.isEmpty() ? 0 : currentPath.get(currentPath.size() - 1);
 
-			List<Integer> currentPath = new LinkedList<>();
-			int ladderUps = ladderUps(i);
-			int snakeDown = snakeDown(i);
-			currentPath.add(i);
-			if(ladderUps > 0) {
-				currentPath.set(0,ladderUps);
-			}
-			else if(snakeDown > 0) {
-				currentPath.set(0,snakeDown);
-			}
-			
-			
-			path.offer(currentPath);
+            for (int i = 1; i <= 6; i++) {
+                int currentDestination = currPlace + i;
+                List<Integer> newPath = new ArrayList<>(currentPath);
+                if (currentDestination == destination) {
+                    
+                    newPath.add(currentDestination);
+                    if (newPath.size() < minPathCount) {
+                        minPathCount = newPath.size();
+                        minimumPath = newPath;
+                    }
+                    break;
+                } else if (currentDestination < destination && !visited.contains(currentDestination)) {
+                    visited.add(currentDestination);
+                    newPath.add(currentDestination);
 
-		}
-    System.out.println("Path is "+path);
-		while (!path.isEmpty()) {
-			List<Integer> currentPath = path.poll();
-			
-			for (int i = 1; i <= 6; i++) {
-				
-				List<Integer> newPath = new LinkedList<>(currentPath);
-					System.out.println("Current Path is : "+currentPath);
-				int currentDestination = newPath.get(newPath.size() - 1) + i;
-				if (currentDestination == destination) {
-					
-					newPath.add(currentDestination);
-					if ( newPath.size() < minPathCount ) {
-						minPathCount = newPath.size();
-						minimumPath = newPath;
-					}
-					break;
-					
-				} else if (currentDestination < destination) {
-					
-					int ladderUps = ladderUps(currentDestination);
-					int snakeDown = snakeDown(currentDestination);
-					if(ladderUps > 0) {
-						newPath.add(ladderUps);
-					}
-					else if(snakeDown > 0) {
-						
-						for(int j = currentPath.size() - 1 ; j >= 0 ;j--) {
-							
-							if(snakeDown < currentPath.get(j)) {
-								newPath.remove(j);
-							}
-							else {
-								newPath.add(snakeDown);
-								break;
-							}
-						}
-						
-					}
-					else {
-						newPath.add(currentDestination);
-					}
-					
-					path.offer(newPath);
-					
-				}
-				else {
-					break;
-				}
+                    int ladderUps = ladderUps(currentDestination);
+                    int snakeDown = snakeDown(currentDestination);
+                    // Handle ladder and snake connections
+                    if (ladderUps > 0) {
+                    	newPath.add(ladderUps);
+                    	if(ladderUps == destination) {
+                             if (newPath.size() < minPathCount) {
+                                 minPathCount = newPath.size();
+                                 minimumPath = newPath;
+                             }
+                             break;
+                    	}
+                        
+                       
+                    } else if (snakeDown > 0) {
+                        // Do not add position after descending down the snake
+                        continue;
+                    }  
+                    path.offer(newPath);
+                }
+            }
+        }
 
-			}
-		}
+        System.out.println("Minimum Path: " + minimumPath);
+    }
 
-		System.out.println(minimumPath);
-		
-
-	}
 
 	private int snakeDown(int currentDestination) {
 
@@ -252,6 +227,17 @@ public class BaseViewModel {
 			}
 		}
 		return 0;
+	}
+
+	public void checkProbability(int position , int destination) {
+		
+		int difference = destination - position;
+		if( difference > 6) {
+			System.out.println("There is no probability to win the Game : ");
+		}
+		else {
+			System.out.println("Probability to win is : "+difference);
+		}
 	}
 
 }

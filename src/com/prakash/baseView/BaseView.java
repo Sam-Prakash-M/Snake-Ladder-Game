@@ -76,14 +76,20 @@ public class BaseView {
 			baseViewModel.setPlayerDetails(name);
 		}
 		
-		System.out.println("1) System Play : "+"\n2)Optimized Play : ");
-		//int choice = scanner.nextInt();
-		//if(choice == 1) {
+		System.out.println("1) System Play : "+"\n2)Optimized Play : "+"\n3) Probability Check");
+		int choice = scanner.nextInt();
+		if(choice == 1) {
 			startPlayerByPlayer(size);
-		//}
-		//else {
-			//baseViewModel.findMinimumWayToAcheiveDestination(size*size);
-		//}
+		}
+		else if(choice == 2) {
+			baseViewModel.findMinimumWayToAcheiveDestination(size*size);
+		}
+		else {
+			
+			System.out.println("Enter a Position to Check : ");
+			int position = scanner.nextInt();
+			baseViewModel.checkProbability(position, size*size);
+		}
 		
 
 	}
