@@ -17,7 +17,7 @@ public class SnakeGameRepository {
 	
 	public static List<Integer> minimumPath = new ArrayList<>();
 	
-	public int[][] board;
+	
 
 	public static List<Players> playersList = new ArrayList<>(); 
 	

@@ -114,10 +114,7 @@ public class BaseViewModel {
 		return player.getCurrPlace() + number <= destination;
 	}
 
-	public void setBoardSize(int size) {
-		SnakeGameRepository.getInstance().board = new int[size][size];
-
-	}
+	
 
 	/*
 	 * public void setCorrectPlaceInBoard(int[] array, int size, int pos) {

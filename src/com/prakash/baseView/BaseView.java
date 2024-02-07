@@ -22,9 +22,6 @@ public class BaseView {
 
 		System.out.println("Enter a Board Size : ");
 		int size = scanner.nextInt();
-		baseViewModel.setBoardSize(size);
-		
-		
 		System.out.println("Enter a Number of Snakes");
 		int noOfSnakes = scanner.nextInt();
 
