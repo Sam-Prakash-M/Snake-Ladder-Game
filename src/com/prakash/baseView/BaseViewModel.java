@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -47,7 +48,7 @@ public class BaseViewModel {
 	public boolean startPlaying(Players player, int size) {
 
 		ThreadLocalRandom randomNumber = ThreadLocalRandom.current();
-
+     
 		int number = randomNumber.nextInt(1, 7);
 		System.out.println("Random  Number is : " + number);
 		if (isPossibleToMove(number, player,size*size)) {
